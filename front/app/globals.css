@@ -62,6 +62,10 @@ body {
   src: url("/Product\ Sans\ Bold.ttf");
 }
 
+#topic{
+  color: #45556c;
+}
+
 /* From Uiverse.io by Cornerstone-04 */ 
 .loader {
   width: 100%;

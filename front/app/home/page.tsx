@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className=" w-screen h-screen">
       <nav className=" w-screen flex shadow bg-white items-center">
-        <h1 className="ml-7 text-xl">SkillGap</h1>
+        <h1 className="ml-7 text-3xl">SkillGap</h1>
         <ul className="flex justify-end gap-6 pt-6 pb-6 w-screen">
 
           <li className="li_navbar_home text-amber-500">Home</li>

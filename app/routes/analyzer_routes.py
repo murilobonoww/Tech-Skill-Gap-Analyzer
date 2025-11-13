@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from models.analyzer_model import JobInput
 from services.openai_service import analyze_job_description
 from fastapi import Body
 

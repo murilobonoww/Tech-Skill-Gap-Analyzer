@@ -1,9 +1,11 @@
 from openai import OpenAI
 from config.settings import OPENAI_API_KEY
+import logging
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 def analyze_job_description(job_text: str):
+    print("executando funcao...")
     prompt = f"""
     Analise a seguinte descrição de vaga e retorne um JSON com:
     - linguagens de programação mais citadas
@@ -15,11 +17,14 @@ def analyze_job_description(job_text: str):
     Vaga:
     {job_text}
     """
-
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}],
-        response_format={"type": "json_object"},
-    )
+    try:
+        response =  client.chat.completions.create(
+            model="gpt-5-nano",
+            messages=[{"role": "user", "content": prompt}]
+        )
+    except Exception as e:
+        print(e)
+    
+    logging.warning(response.choices[0].message.content)
 
     return response.choices[0].message.content

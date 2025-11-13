@@ -4,9 +4,18 @@ from openai import OpenAI
 from config.settings import OPENAI_API_KEY
 from database import get_db
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(title="Tech Skill Gap Analyzer")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 app.include_router(analyzer_routes.router)

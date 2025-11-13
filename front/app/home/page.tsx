@@ -8,8 +8,9 @@ export default function Home() {
       <nav className=" w-screen flex shadow bg-white items-center">
         <h1 className="ml-7 text-xl">SkillGap</h1>
         <ul className="flex justify-end gap-6 pt-6 pb-6 w-screen">
+
           <li className="li_navbar_home text-amber-500">Home</li>
-          <li className="li_navbar_home">Analizador</li>
+          <Link href="/analyzer"><li className="li_navbar_home">Analizador</li></Link>
           <li className="li_navbar_home">Meu perfil</li>
           <li className="li_navbar_home">Análises</li>
           <li className="li_navbar_home mr-10">

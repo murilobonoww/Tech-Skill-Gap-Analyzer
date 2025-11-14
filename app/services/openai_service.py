@@ -30,11 +30,10 @@ def analyze_job_description(job_text: str):
 def compare_requirements(job_text: str, profile: str):
     prompt = f"""
     este é o meu perfil profissional: {profile}. analise o que eu sei e compare com o que esta vaga a seguir pede, e retorne um JSON com:
-    - correspondencia (string, ex: "7 de 12 skills necessárias", serve pra medir quantos itens meu perfil tem / de quantos a vaga pede. Cada item técnico que a vaga informar conta)
     - matchs_list (string [], lista com os itens que corresponderam)
-    - not_matchs_list (string [], lista com os itens que não tenho portanto não corresponderam)
+    - not_matchs_list (string [], lista com os itens que não tenho, portanto não corresponderam)
+    se você encontrar em comum alguma palavra chave, por exemplo: meu perfil tem 'NodeJS' e a vaga exige 'NodeJS/NestJS', marque apenas 'NodeJS' como sendo uma correspondencia e deixe apenas o NestJS como faltando
     - roadmap_personalizado (string [], crie um roadmap personalizado dados os itens que faltaram no meu perfil, e organize os aprendizados na melhor ordem possível pra facilitar aprendizado. Separe por fases, ex: Fase 1, Fase 2, e não especifique o tempo)
-    se você encontrar em comum alguma palavra chave, por exemplo: meu perfil tem node e a vaga exige 'NodeJS/NestJS', marque node como sendo uma correspondencia e deixe apenas o Nest como faltando
     {job_text}
     """
     

@@ -62,8 +62,9 @@ body {
   src: url("/Product\ Sans\ Bold.ttf");
 }
 
-#topic{
+.topic{
   color: #45556c;
+  margin-left: -24px;
 }
 
 /* From Uiverse.io by Cornerstone-04 */ 

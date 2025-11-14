@@ -14,22 +14,27 @@ export default function Login() {
     const [loading2, setLoading2] = useState(false)
     const [loading, setLoading] = useState(false)
     const [porcentagem, setPorcentagem] = useState(0)
+    const [skills_correspondentes, setSkills_correspondentes] = useState(0)
+    const [skills_totais, setSkills_totais] = useState(0)
+
 
     useEffect(() => {
         if (!loading && comparison_response) {
-            const correspondencia = comparison_response.correspondencia
-            const numeros = correspondencia.match(/\d+/g);
-            const num_skills_correspondentes = Number(numeros![0])
-            const num_skills_totais = Number(numeros![1])
-            const porcentagem_ = Number(((num_skills_correspondentes / num_skills_totais) * 100).toFixed(2))
+
+            const correspondentes = comparison_response.matchs_list.length
+            const totais = comparison_response.not_matchs_list.length + comparison_response.matchs_list.length
+            const porcentagem_ = Number(((correspondentes / totais) * 100).toFixed(2))
             setPorcentagem(porcentagem_)
+            setSkills_correspondentes(correspondentes)
+            setSkills_totais(totais)
+
         }
     }, [loading, comparison_response])
 
     const getColor = () => {
-        if(porcentagem <= 50) return "text-red-400"
-        if(porcentagem <= 70) return "text-yellow-200"
-        else return "text-green-300"
+        if(porcentagem <= 50) return "text-red-400 "
+        if(porcentagem <= 70) return "text-yellow-200 "
+        else return "text-green-300 "
     }
 
 
@@ -114,20 +119,20 @@ export default function Login() {
 
                     {!loading && (
                         <div className="ml-12 mt-25  max-w-170 bg-white p-10 rounded-2xl shadow">
-                            <h1 className="text-3xl text-black mb-1">Resumo da vaga</h1>
-                            <div className="text-slate-400"><div id="topic">Linguagens de programação:</div> {resume_response && !loading ? resume_response.linguagens_de_programacao_mais_citadas.map((lang, l) => (
+                            <h1 className="text-3xl text-black mb-1 -ml-6">📝Resumo da vaga</h1>
+                            <div className="text-slate-400"><div className="topic">💻Linguagens de programação:</div> {resume_response && !loading ? resume_response.linguagens_de_programacao_mais_citadas.map((lang, l) => (
                                 <li key={l}>{lang}</li>
                             )) : "-"}</div>
 
-                            <div className="text-slate-400"><div id="topic">Frameworks e bibliotecas:</div> {resume_response && !loading ? resume_response.frameworks_e_bibliotecas_mencionadas.map((item, i) => (
+                            <div className="text-slate-400"><div className="topic">🛠️Frameworks e bibliotecas:</div> {resume_response && !loading ? resume_response.frameworks_e_bibliotecas_mencionadas.map((item, i) => (
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
 
 
-                            <div className="text-slate-400"><div id="topic">Bancos de dados:</div> {resume_response && !loading ? resume_response.banco_de_dados.map((item, i) => (
+                            <div className="text-slate-400"><div className="topic">🗄️Bancos de dados:</div> {resume_response && !loading ? resume_response.banco_de_dados.map((item, i) => (
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
-                            <div className="text-slate-400"><div id="topic">Skills recomendadas:</div>{resume_response && !loading ? resume_response.skills_recomendadas.map((skill, s) => (
+                            <div className="text-slate-400"><div className="topic">🧠Skills recomendadas:</div>{resume_response && !loading ? resume_response.skills_recomendadas.map((skill, s) => (
                                 <li key={s}>{skill}</li>
                             )) : "-"}</div>
                         </div>
@@ -135,22 +140,24 @@ export default function Login() {
 
                     {!loading && (
                         <div className="ml-12 mt-10 max-w-170 bg-white p-10 rounded-2xl shadow mb-5">
-                            <h1 className="text-3xl text-black mb-1">Análise</h1>
-                            {comparison_response && !loading && <div className={getColor()}>{porcentagem}%</div>}
+                            <h1 className="text-3xl text-black mb-1 -ml-6">🔍Análise</h1>
+                            {comparison_response && !loading && <div className={"text-3xl " + getColor()}>{porcentagem}%</div>}
 
-                            <div className={getColor()}> {comparison_response && !loading ? <div className="">{comparison_response.correspondencia}</div> : "-"}</div>
+                            <div className={getColor()}> {comparison_response && !loading ? <div className="">{skills_correspondentes} de {skills_totais} skills necessárias</div> : "-"}</div>
 
-                            <div className="text-slate-400"><div id="topic">Skills correspondidas:</div> {comparison_response && !loading ? comparison_response.matchs_list.map((item, i) => (
+                            <div className="text-slate-400"><div className="topic">🎯Skills correspondidas:</div> {comparison_response && !loading ? comparison_response.matchs_list.map((item, i) => (
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
 
+                            <div className="text-slate-400"><div className="topic">⚠️Skills faltando:</div> {comparison_response && !loading ? comparison_response.not_matchs_list.map((item, i) => (
+                                <li key={i}>{item}</li>
+                            )) : "-"}</div>
 
-                            <div className="text-slate-400"><div id="topic">Skills faltando:</div> {comparison_response && !loading ? comparison_response.not_matchs_list.map((item, i) => (
+                            {/* <div className="text-slate-400"><div className="topic">🧭Roadmap personalizado:</div> {comparison_response && !loading ? comparison_response.roadmap_personalizado.map((item, i) => (
                                 <li key={i}>{item}</li>
-                            )) : "-"}</div>
-                            <div className="text-slate-400"><div id="topic">Roadmap personalizado:</div> {comparison_response && !loading ? comparison_response.roadmap_personalizado.map((item, i) => (
-                                <li key={i}>{item}</li>
-                            )) : "-"}</div>
+                            )) : "-"}</div> */}
+
+                            {comparison_response && !loading &&<button className="-ml-6 bg-amber-500 shadow text-white mt-3 rounded p-1 cursor-pointer">Gerar roadmap personalizado</button>}
                         </div>
                     )}
 
@@ -168,8 +175,8 @@ export default function Login() {
                                 CompareRequirements()
                             }} className="bg-slate-100 stroke-slate-600 border border-slate-200 col-start-6 flex justify-center rounded-lg p-2 duration-300 hover:border-slate-600 hover:bg-amber-500 hover:stroke-white hover:text-white focus:stroke-white focus:bg-amber-500 w-20">
                                 <svg fill="none" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z"></path>
-                                    <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" d="M10.11 13.6501L13.69 10.0601"></path>
+                                    <path strokeLinejoin="round" strokeLinecap="round" strokeWidth="1.5" d="M7.39999 6.32003L15.89 3.49003C19.7 2.22003 21.77 4.30003 20.51 8.11003L17.68 16.6C15.78 22.31 12.66 22.31 10.76 16.6L9.91999 14.08L7.39999 13.24C1.68999 11.34 1.68999 8.23003 7.39999 6.32003Z"></path>
+                                    <path strokeLinejoin="round" strokeLinecap="round" strokeWidth="1.5" d="M10.11 13.6501L13.69 10.0601"></path>
                                 </svg>
                             </button>
                         </div>

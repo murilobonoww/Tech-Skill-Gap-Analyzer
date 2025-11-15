@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { stringify } from "querystring";
 import Image from "next/image";
+import "./analyzer.css"
 
 export default function Login() {
 
@@ -32,8 +33,8 @@ export default function Login() {
     }, [loading, comparison_response])
 
     const getColor = () => {
-        if(porcentagem <= 50) return "text-red-400 "
-        if(porcentagem <= 70) return "text-yellow-200 "
+        if (porcentagem <= 50) return "text-red-400 "
+        if (porcentagem <= 70) return "text-yellow-200 "
         else return "text-green-300 "
     }
 
@@ -48,10 +49,16 @@ export default function Login() {
     }, [loading1, loading2])
 
     type Resume_response = {
-        "linguagens_de_programacao_mais_citadas": string[],
-        "frameworks_e_bibliotecas_mencionadas": string[],
-        "banco_de_dados": string[],
-        "skills_recomendadas": string[],
+        "linguagens_de_programacao": string[],
+        "frameworks_e_bibliotecas": string[],
+        "bancos_de_dados": string[],
+        "metodologias_de_trabalho": string[],
+        "arquiteturas_e_paradigmas" : string[],
+        "devops_e_infraestrutura": string[],
+        "cloud_computing": string [],
+        "deploy_e_build_tools": string[],
+        "ferramentas_e_tecnologias_front-end": string[],
+        "ferramentas_e_tecnologias_back-end": string[],
         "roadmap_aprendizado_resumido": RoadMapItem[]
     }
 
@@ -74,6 +81,7 @@ export default function Login() {
             const data = JSON.parse(res.data)
             setLoading1(false)
             setResume_response(data)
+            console.log(data)
         } catch (error) {
             console.log("Erro ao postar descrição: ", error)
         }
@@ -108,7 +116,7 @@ export default function Login() {
                 </ul>
             </nav>
             <main className="flex w-screen h-screen">
-                <div className="leftcolumn bg-gray-100 w-1/2 flex flex-col overflow-auto h-screen">
+                <div className="leftcolumn mt-19 bg-gray-100 w-1/2 flex flex-col overflow-auto">
                     {loading &&
                         <div className="loader">
                             <div className="ball"></div>
@@ -118,23 +126,52 @@ export default function Login() {
                     }
 
                     {!loading && (
-                        <div className="ml-12 mt-25  max-w-170 bg-white p-10 rounded-2xl shadow">
+                        <div className="ml-12  max-w-170 bg-white p-10 rounded-2xl shadow mt-5">
                             <h1 className="text-3xl text-black mb-1 -ml-6">📝Resumo da vaga</h1>
-                            <div className="text-slate-400"><div className="topic">💻Linguagens de programação:</div> {resume_response && !loading ? resume_response.linguagens_de_programacao_mais_citadas.map((lang, l) => (
+                            <div className="text-slate-400"><div className="topic">💻Linguagens de programação:</div> {resume_response && !loading ? resume_response.linguagens_de_programacao.map((lang, l) => (
                                 <li key={l}>{lang}</li>
                             )) : "-"}</div>
 
-                            <div className="text-slate-400"><div className="topic">🛠️Frameworks e bibliotecas:</div> {resume_response && !loading ? resume_response.frameworks_e_bibliotecas_mencionadas.map((item, i) => (
+                            <div className="text-slate-400"><div className="topic">🛠️Frameworks e bibliotecas:</div> {resume_response && !loading ? resume_response.frameworks_e_bibliotecas.map((item, i) => (
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
 
 
-                            <div className="text-slate-400"><div className="topic">🗄️Bancos de dados:</div> {resume_response && !loading ? resume_response.banco_de_dados.map((item, i) => (
+                            <div className="text-slate-400"><div className="topic">🗄️Bancos de dados:</div> {resume_response && !loading ? resume_response.bancos_de_dados.map((item, i) => (
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
-                            <div className="text-slate-400"><div className="topic">🧠Skills recomendadas:</div>{resume_response && !loading ? resume_response.skills_recomendadas.map((skill, s) => (
+
+                            
+                            <div className="text-slate-400"><div className="topic">📋Metodologias de trabalho:</div> {resume_response && !loading ? resume_response.metodologias_de_trabalho.map((item, i) => (
+                                <li key={i}>{item}</li>
+                            )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">🧱Arquiteturas & Paradigmas:</div>{resume_response && !loading ? resume_response.arquiteturas_e_paradigmas.map((skill, s) => (
                                 <li key={s}>{skill}</li>
                             )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">⚙️DevOps & Infraestrutura:</div>{resume_response && !loading ? resume_response.devops_e_infraestrutura.map((skill, s) => (
+                                <li key={s}>{skill}</li>
+                            )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">☁️Cloud computing:</div>{resume_response && !loading ? resume_response.cloud_computing.map((skill, s) => (
+                                <li key={s}>{skill}</li>
+                            )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">🚀Deploy & Build tools:</div>{resume_response && !loading ? resume_response.deploy_e_build_tools.map((skill, s) => (
+                                <li key={s}>{skill}</li>
+                            )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">🎨Ferramentas & Tecnologias de Front-end:</div>{resume_response && !loading ? resume_response["ferramentas_e_tecnologias_front-end"].map((skill, s) => (
+                                <li key={s}>{skill}</li>
+                            )) : "-"}</div>
+
+                            <div className="text-slate-400"><div className="topic">🖥️Ferramentas & Tecnologias de Back-end:</div>{resume_response && !loading ? resume_response["ferramentas_e_tecnologias_back-end"].map((skill, s) => (
+                                <li key={s}>{skill}</li>
+                            )) : "-"}</div>
+
+
+                            
                         </div>
                     )}
 
@@ -153,11 +190,15 @@ export default function Login() {
                                 <li key={i}>{item}</li>
                             )) : "-"}</div>
 
-                            {/* <div className="text-slate-400"><div className="topic">🧭Roadmap personalizado:</div> {comparison_response && !loading ? comparison_response.roadmap_personalizado.map((item, i) => (
-                                <li key={i}>{item}</li>
-                            )) : "-"}</div> */}
 
-                            {comparison_response && !loading &&<button className="-ml-6 bg-amber-500 shadow text-white mt-3 rounded p-1 cursor-pointer">Gerar roadmap personalizado</button>}
+                        </div>
+                    )}
+
+                    {!loading && (
+                        <div className="ml-12 mt-10 max-w-170 bg-white p-10 rounded-2xl shadow mb-5">
+                            <div className="text-slate-400"><div className="text-3xl text-black mb-1 -ml-6">🧭Roadmap personalizado:</div> {comparison_response && !loading ? comparison_response.roadmap_personalizado.map((item, i) => (
+                                <li className="mt-7 pt-7 border-t-2 border-gray-100" key={i}>{item}</li>
+                            )) : "-"}</div>
                         </div>
                     )}
 
